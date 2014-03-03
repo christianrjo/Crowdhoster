@@ -6,16 +6,19 @@ Crowdhoster::Application.routes.draw do
   root                                         to: 'pages#index'
 
   # USERS
-  devise_for :users, { path: 'account', controllers: { registrations: :registrations } }
+  devise_for :users, { path: 'account' }
   devise_scope :user do
     match '/user/settings',                    to: 'devise/registrations#edit',             as: :user_settings
   end
 
   # ADMIN
-  match '/admin',                      to: 'admin#admin_website',                   as: :admin_website
+  get '/admin',                                to: 'admin#admin_dashboard',                 as: :admin_dashboard
+  match '/admin/homepage',                     to: 'admin#admin_homepage',                  as: :admin_homepage
+  match '/admin/site-settings',                to: 'admin#admin_site_settings',             as: :admin_site_settings
+  match '/admin/customize',                    to: 'admin#admin_customize',                 as: :admin_customize
   namespace :admin do
     resources :campaigns
-    post '/payments/:id/refund',                to: 'payments#refund_payment',               as: :admin_payment_refund
+    post '/payments/:id/refund',               to: 'payments#refund_payment',               as: :admin_payment_refund
   end
 
   match '/admin/campaigns/:id/copy',           to: 'admin/campaigns#copy',                  as: :admin_campaigns_copy
@@ -32,6 +35,7 @@ Crowdhoster::Application.routes.draw do
   match '/:id/checkout/payment',               to: 'campaigns#checkout_payment',            as: :checkout_payment
   match '/:id/checkout/process',               to: 'campaigns#checkout_process',            as: :checkout_process
   match '/:id/checkout/confirmation',          to: 'campaigns#checkout_confirmation',       as: :checkout_confirmation
+  post '/:id/checkout/error',                  to: 'campaigns#checkout_error',              as: :checkout_error
   match '/:id',                                to: 'campaigns#home',                        as: :campaign_home
   
   

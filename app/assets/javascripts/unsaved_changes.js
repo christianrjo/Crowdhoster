@@ -17,7 +17,8 @@ var unsavedChangesChecker = function() {
 }
 
 $(function() {
-  if ($('#admin_website_form, #admin_campaign_form').length) {
+  var elements = '#admin_homepage_form, #admin_site_settings_form, #admin_campaign_form, #admin_customize_form';
+  if ($(elements).length) {
     $(window).bind('beforeunload', unsavedChangesChecker);
   }
 });

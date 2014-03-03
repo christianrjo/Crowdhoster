@@ -1,7 +1,9 @@
 class Admin::CampaignsController < ApplicationController
+  include AdminMixin
   layout "admin"
   before_filter :authenticate_user!
   before_filter :verify_admin
+  before_filter { |c| c.create_breadcrumb ['Campaigns', admin_campaigns_path] }
 
   def index
     @campaigns = Campaign.order("created_at ASC")
@@ -9,6 +11,7 @@ class Admin::CampaignsController < ApplicationController
 
   def new
     @campaign = Campaign.new
+    create_breadcrumb(['New Campaign', new_admin_campaign_path])
   end
 
   def copy
@@ -29,7 +32,7 @@ class Admin::CampaignsController < ApplicationController
       Crowdtilt.sandbox
       response = Crowdtilt.post('/campaigns', {campaign: campaign})
     rescue => exception
-      redirect_to admin_campaigns, :flash => { :error => "An error occurred" }
+      redirect_to admin_campaigns, :flash => { :error => "Could not copy campaign" }
     else
       @campaign.update_api_data(response['campaign'])
       @campaign.save
@@ -59,7 +62,6 @@ class Admin::CampaignsController < ApplicationController
     is_default = params[:campaign].delete :is_default
     @campaign = Campaign.new(params[:campaign])
 
-    # Check if the new settings pass validations...if not, re-render form and display errors in flash msg
     if !@campaign.valid?
       flash.now[:error] = @campaign.errors.full_messages.join(', ')
       render action: "new"
@@ -133,13 +135,14 @@ class Admin::CampaignsController < ApplicationController
       end
       @settings.save
 
-      redirect_to campaign_home_url(@campaign), :flash => { :notice => "Campaign updated!" }
+      redirect_to campaign_home_url(@campaign), :flash => { :success => "Campaign created!" }
       return
     end
   end
 
   def edit
     @campaign = Campaign.find(params[:id])
+    create_breadcrumb(['Edit Campaign', edit_admin_campaign_path(@campaign)])
   end
 
   def update
@@ -187,7 +190,7 @@ class Admin::CampaignsController < ApplicationController
               r.collect_shipping_flag = reward['collect_shipping_flag']
               r.include_claimed = reward['include_claimed']
               unless r.save
-                flash.now[:error] = "Invalid rewards"
+                flash.now[:error] = "A reward field is missing or invalid"
                 render action: "edit"
                 return
               end
@@ -205,7 +208,6 @@ class Admin::CampaignsController < ApplicationController
       end
     end
 
-    # Check if the new settings pass validations...if not, re-render form and display errors in flash msg
     if !@campaign.valid?
       flash.now[:error] = @campaign.errors.full_messages.join(', ')
       render action: "edit"
@@ -248,7 +250,7 @@ class Admin::CampaignsController < ApplicationController
     else
       @campaign.update_api_data(response['campaign'])
       @campaign.save
-      redirect_to campaign_home_url(@campaign), :flash => { :notice => "Campaign updated!" } and return
+      redirect_to campaign_home_url(@campaign), :flash => { :success => "Campaign updated!" } and return
     end
   end
 
@@ -296,6 +298,7 @@ class Admin::CampaignsController < ApplicationController
       @payments = @campaign.payments_completed.order("created_at ASC")
     end
 
+    create_breadcrumb(['Payments', admin_campaigns_payments_path(@campaign)])
     respond_to do |format|
       format.html
       format.csv { send_data @payments.to_csv, filename: "#{@campaign.name}.csv" }

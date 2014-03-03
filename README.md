@@ -1,38 +1,26 @@
-# Crowdhoster
+# CrowdtiltOpen
 
-![Crowdhoster index](https://s3.amazonaws.com/crowdhoster/github_assets/readmeScreenshot.png)
-
-"Launch your own crowdfunding site... without touching a line of code"
-
-But if you're here&mdash;well, maybe you want to touch some code.
+Launch your own advanced crowdfunding page
 
 ---
 **Demo**
 
-You can play with a complete working demo at [demo.crowdhoster.com/admin](http://demo.crowdhoster.com/admin)
-
-Use these credentials to log in:
-
-email: demo@crowdhoster.com | password: crowdhoster
+You can play with a complete working demo at [open.crowdtilt.com](http://open.crowdtilt.com)
 
 **Quick Links:**
 
 "I want to launch my own campaign without touching any code."
 
-[Head to the main Crowdhoster page](http://crowdhoster.com).
+[Head to the main CrowdtiltOpen page](http://open.crowdtilt.com).
 
-"I want help customizing my Crowdhoster page."
+"I want to contact the CrowdtiltOpen team."
 
-[Check out this Crowdhoster setup guide](http://www.crowdhoster.com/setup).
-
-"I want to contact the Crowdhoster team."
-
-Email us directly: [team@crowdhoster.com](mailto:team@crowdhoster.com)
+Email us directly: [open@crowdtilt.com](mailto:open@crowdtilt.com)
 
 ## Install
 
 ### Dependencies
-To run Crowdhoster you'll need the following prerequisites installed:
+To run CrowdtiltOpen you'll need the following prerequisites installed:
 
 * [Homebrew](http://brew.sh/) (for downloading software packages)
 
@@ -76,11 +64,11 @@ To run Crowdhoster you'll also need to sign up for the following:
 
 Get  started by:
 
-* Downloading a .zip of the [latest release](https://github.com/Crowdtilt/Crowdhoster/releases) to your local machine
+* Downloading a .zip of the [latest release](https://github.com/Crowdtilt/CrowdtiltOpen/releases) to your local machine
 
   or
 
-* Creating a fork of Crowdhoster and cloning it to your local machine.
+* Creating a fork of CrowdtiltOpen and cloning it to your local machine.
 
 
 
@@ -98,15 +86,15 @@ $ cp .env.example .env
 ```
 
 
-Then open up the .env file and fill in the variables with your app_name and credentials. Leave ```ENABLE_ASSET_SYNC``` set to 'true' if you plan to use AWS to host your assets (recommended). The bucket for asset syncing should be in the US Standard (us-east-1) zone.
+Then open up the .env file and fill in the variables with your app_name and credentials. Leave `ENABLE_ASSET_SYNC` set to 'true' if you plan to use AWS to host your assets (recommended). The bucket for asset syncing should be in the US Standard (us-east-1) zone.
 
-The ```SECRET_TOKEN``` variable should be at least 30 characters and all random, no regular words or you'll be exposed to dictionary attacks.  You can generate a new one by running this command from the root of your project directory:
+The `SECRET_TOKEN`  and `DEVISE_SECRET_KEY` variables should be at least 30 characters and all random, no regular words or you'll be exposed to dictionary attacks.  Do NOT reuse the same secret token - you'll need to generate it twice. You can generate a new one by running this command from the root of your project directory:
 
 ```
-$ rake secret
+$ foreman run rake secret
 ```
 
-Important: Your ```APP_NAME``` must not have a space in it. Underscores and hypens are accepted.
+Important: Your `APP_NAME` must not have a space in it. Underscores and hypens are accepted.
 
 ```
 APP_NAME=myawesomeapp
@@ -120,6 +108,7 @@ MAILGUN_DOMAIN=myawesomeapp.mailgun.org
 MAILGUN_PASSWORD=mailgunpassword
 MAILGUN_USERNAME=postmaster@myawesomeapp.mailgun.org
 SECRET_TOKEN=secrettoken
+DEVISE_SECRET_KEY=secrettoken
 ```
 
 Install the gems
@@ -203,19 +192,23 @@ $ heroku addons:add papertrail:choklad
 
 ## Contribute
 
-Looking to help make Crowdhoster better?
+Looking to help make CrowdtiltOpen better?
 
-Our feature development roadmap and bugs are inputted as issues. See a complete list by [clicking here](https://github.com/Crowdtilt/Crowdhoster/issues).
+Our feature development roadmap and bugs are inputted as issues. See a complete list by [clicking here](https://github.com/Crowdtilt/CrowdtiltOpen/issues).
 
-Contribute by forking the repo and working on a branch. Submit your changes via pull request.
-
-A more complete contribution and style guide is coming soon!
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Write your code
+4. Commit your changes (`git commit -am 'Add some feature'`)
+5. Push to the branch (`git push origin my-new-feature`)
+6. Create new pull request
+7. We'll send you a Crowdtilt tshirt
 
 ## Contact and License
 
-Want to get in touch? Email [team@crowdhoster.com](mailto:team@crowdhoster.com).
+Want to get in touch? Email [open@crowdtilt.com](mailto:open@crowdtilt.com).
 
-#### MIT License. Copyright 2013 Crowdtilt.
+#### MIT License. Copyright 2014 Crowdtilt.
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
 "Software"), to deal in the Software without restriction, including
